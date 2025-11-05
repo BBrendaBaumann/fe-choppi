@@ -6,16 +6,35 @@ import { createPortal } from 'react-dom';
 import { CgShoppingCart } from 'react-icons/cg';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import Image from 'next/image';
-import { useCartStore } from '@/src/store/cartStore'; 
+import { useCartStore, IProdCart } from '@/src/store/cartStore';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function CartSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  const { prods, clearProd, clearCart } = useCartStore();
-
+  const { prods, addProd, clearProd, clearCart } = useCartStore();
+  
   useEffect(() => setMounted(true), []);
+
+  const increaseProd = (id: number) => {
+    const prod = prods.find(p => p.id === id);
+    if (prod) addProd({ ...prod, stock_order: 1 });
+  };
+
+  const decreaseProd = (id: number) => {
+    const prod = prods.find(p => p.id === id);
+    if (prod && prod.stock_order > 1) {
+      clearProd({ ...prod, stock_order: 0 });
+      addProd({ ...prod, stock_order: prod.stock_order - 1 });
+    } else if (prod && prod.stock_order === 1) {
+      clearProd(prod);
+    }
+  };
+
+  const totalItems = prods.reduce((acc, item) => acc + item.stock_order, 0);
+
+  const subtotal = prods.reduce((acc, item) => acc + item.price * item.stock_order, 0);
 
   const sidebarContent = (
     <AnimatePresence>
@@ -61,11 +80,26 @@ export default function CartSidebar() {
                         height={60}
                         className="rounded-md"
                       />
-                      <div>
+                      <div className="flex flex-col">
                         <h6 className="font-medium text-sm">{item.name}</h6>
-                        <p className="text-xs text-gray-600">
-                          {item.stock_order} × ${item.price.toFixed(2)}
-                        </p>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => decreaseProd(item.id)}
+                            className="bg-gray-200 px-2 rounded hover:bg-gray-300"
+                          >
+                            -
+                          </button>
+                          <span>{item.stock_order}</span>
+                          <button
+                            onClick={() => increaseProd(item.id)}
+                            className="bg-gray-200 px-2 rounded hover:bg-gray-300"
+                          >
+                            +
+                          </button>
+                          <span className="ml-2 text-xs text-gray-600">
+                            ${ (item.stock_order * item.price).toFixed(2) }
+                          </span>
+                        </div>                        
                       </div>
                     </div>
                     <FaRegTrashAlt
@@ -81,6 +115,9 @@ export default function CartSidebar() {
 
             {prods.length > 0 && (
               <footer className="p-4 border-t flex flex-col gap-2">
+                <p className="text-right font-semibold text-lg">
+                  Subtotal: ${subtotal.toFixed(2)}
+                </p>
                 <button
                   onClick={() => {
                     toast.success('Pedido agregado correctamente');
@@ -106,12 +143,17 @@ export default function CartSidebar() {
 
   return (
     <>
-    <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" reverseOrder={false} />
       <button
         onClick={() => setIsOpen(true)}
         className="fixed top-4 right-4 bg-amber-800/50 text-amber-900 p-3 rounded-full shadow-lg hover:bg-chocolate/80 transition mt-24"
       >
         <CgShoppingCart size={22} />
+        {totalItems > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+            {totalItems}
+          </span>
+        )}
       </button>
 
       {mounted && createPortal(sidebarContent, document.body)}

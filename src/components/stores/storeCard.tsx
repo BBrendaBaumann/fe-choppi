@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Store } from '@/src/lib/types';
 
 export default function StoreCard({ store }: { store: Store }) {
-  // si el store no tiene imagen, usamos una por defecto
+  
   const imageSrc = store.image && store.image.trim() !== ''
     ? store.image
     : '/tienda.jpg';

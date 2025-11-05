@@ -10,7 +10,7 @@ export default function AdminNavbar() {
   const router = useRouter();
   const { user } = useAuthStore();
 
-  if (!user?.isAdmin) return null; // solo admins
+  if (!user?.isAdmin) return null;
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-amber-800/40 border-b border-amber-500 text-white shadow-md z-50">

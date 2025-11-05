@@ -23,7 +23,6 @@ export default function StoreProductsPage() {
   const [editPrice, setEditPrice] = useState<number>(0);
   const [editStock, setEditStock] = useState<number>(0);
 
-  // 🔄 Fetch productos
   const fetchStoreProducts = async () => {
     try {
       setLoading(true);
@@ -36,7 +35,6 @@ export default function StoreProductsPage() {
     }
   };
 
-  // 🔐 Redirección si no hay auth o no es admin
   useEffect(() => {
     if (!user) router.push('/login');
     else if (!user.isAdmin) router.push('/stores');
@@ -46,7 +44,6 @@ export default function StoreProductsPage() {
     if (token && storeId) fetchStoreProducts();
   }, [token, storeId]);
 
-  // 🗑️ Eliminar producto
   const handleDelete = (spId: number) => {
     console.log('🧨 handleDelete fired for', spId);
     modal.confirm({
@@ -70,14 +67,12 @@ export default function StoreProductsPage() {
     });
   };
 
-  // ✏️ Abrir modal de edición
   const handleEdit = (item: StoreProduct) => {
     setEditingItem(item);
     setEditPrice(item.price);
     setEditStock(item.stock);
   };
 
-  // 💾 Guardar cambios
   const handleSaveEdit = async () => {
     if (!editingItem) return;
     try {
@@ -95,7 +90,6 @@ export default function StoreProductsPage() {
     }
   };
 
-  // 📋 Columnas de la tabla
   const columns = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     {

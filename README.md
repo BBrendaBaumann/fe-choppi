@@ -1,27 +1,27 @@
-# Choppi App
-## URLs públicas
+# 🍔Choppi App
+## 🌐 URLs públicas
 
-Frontend: https://fe-choppi.vercel.app/
+**Frontend:** https://fe-choppi.vercel.app/
 
-Backend (API/Swagger): https://be-choppi.onrender.com/api (Swagger disponible en https://be-choppi.onrender.com/api)
+**Backend (API/Swagger):** https://be-choppi.onrender.com/api (Swagger disponible en https://be-choppi.onrender.com/api)
 
-## Demo user
+## 👤Demo user
 
 Puedes probar la aplicación con el siguiente usuario demo:
 
-Email: demo@choppi.test
+**Email:** demo@choppi.test
 
-Password: Password123!
+**Password:** Password123!
 
-## Repositorios
+##  📂 Repositorios
 
-Backend: https://github.com/BBrendaBaumann/be-choppi
+**Backend:** https://github.com/BBrendaBaumann/be-choppi
 
-Frontend: https://github.com/BBrendaBaumann/fe-choppi
+**Frontend:** https://github.com/BBrendaBaumann/fe-choppi
 
-# Setup local
+# 🛠️ Setup local
 
-Frontend
+### Frontend
 
 ## Clonar el repositorio:
 
